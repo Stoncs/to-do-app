@@ -1,10 +1,16 @@
+import React from 'react';
 import './App.scss';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
+      <header>
+        <h1>To Do List</h1>
+      </header>
       <main>
-        text
+        <div className='app__wrapper'>
+          
+        </div>
       </main>
     </div>
   );
