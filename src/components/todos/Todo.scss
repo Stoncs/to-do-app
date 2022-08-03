@@ -1,16 +1,22 @@
+@import './../../styles/colors.scss';
+
 .to-do-item {
   margin-top: 10px;
   margin-bottom: 5px;
   width: 80%;
-  background-color: red;
   cursor: pointer;
 
-  &__text {
 
+  &__text {
+  border: 2px solid $clr-border-to-do-item;
     height: 30px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__active {
+    outline: 1px solid black;
   }
 }

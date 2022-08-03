@@ -14,13 +14,8 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  box-shadow: 0px 4px 20px $clr-shadow;
 
-  &__header {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translate(-50%, -10px);
-  }
 }
 
 main {
@@ -54,14 +49,14 @@ main {
     }
   }
 
-  &__edit {
+  &__edit-area {
     background-color: $clr-background-edit-section;
     height: 100%;
     width: 80%;
   }
 }
 
-.edit {
+.edit-area {
   text-align: center;
   &__container {
     display: flex;
