@@ -1,5 +1,19 @@
 import React from 'react';
+
+import { Todos } from './components';
 import './App.scss';
+
+const items = [
+  {id: 1, text: 'todo'},
+  {id: 2, text: 'todo'},
+  {id: 3, text: 'todo'},
+  {id: 4, text: 'todo'},
+  {id: 5, text: 'todo'},
+  {id: 6, text: 'todo'},
+  {id: 7, text: 'todo'},
+  {id: 8, text: 'todo'},
+  {id: 9, text: 'todo'},
+];
 
 function App() {
   return (
@@ -10,12 +24,11 @@ function App() {
       <main>
         <div className='to-do'>
           <div className='to-do__panel'>
-            <div className='to-do-item'>
-              <div className='to-do-item__text'>
-                <p>TODO</p>
-              </div>
+            <Todos items={items}/>
+            <div className='to-do__btn'>
+              <button className='btn'>New TODO</button>
             </div>
-            <button className='to-do__btn btn'>New TODO</button>
+
           </div>
           <div className='to-do__edit'>
             <div className='edit'>

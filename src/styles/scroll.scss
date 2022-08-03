@@ -1,0 +1,10 @@
+::-webkit-scrollbar { /* 1 - скроллбар */
+  width: 10px;
+  height: 4px;
+  background-color: #FFFFFF;
+}
+
+::-webkit-scrollbar-thumb { /* 5 - ползунок */
+  border-radius: 2px;
+  background-color: #d1d1d1;
+}

@@ -7,7 +7,7 @@ body {
 }
 
 .app {
-  height: 80%;
+  height: 90%;
   width: 80%;
   margin: auto auto;
   position: absolute;
@@ -20,7 +20,6 @@ body {
     top: -20px;
     left: 50%;
     transform: translate(-50%, -10px);
-
   }
 }
 
@@ -42,30 +41,23 @@ main {
   }
 
   &__btn {
-    width: 70%;
-    background-color: $clr-background-btn;
+    width: 100%;
+    background-color: $clr-background-to-do;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
+    button {
+      height: 60%;
+      width: 70%;
+    }
   }
 
   &__edit {
     background-color: $clr-background-edit-section;
     height: 100%;
     width: 80%;
-  }
-}
-
-.to-do-item {
-  margin-top: 10px;
-  width: 90%;
-  background-color: red;
-
-  &__text {
-    position: relative;
-    height: 30px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 

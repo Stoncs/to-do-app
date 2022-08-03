@@ -1,0 +1,35 @@
+@import './../../styles/colors.scss';
+
+.to-dos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-y: scroll;
+  margin-left: 10px;
+
+
+  &__title {
+    background-color: $clr-background-to-do;
+    width: 100%;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h2 {
+      display: block;
+      font-size: 15px;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+}
+

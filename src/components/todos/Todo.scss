@@ -1,0 +1,16 @@
+.to-do-item {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 80%;
+  background-color: red;
+  cursor: pointer;
+
+  &__text {
+
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

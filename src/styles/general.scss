@@ -1,4 +1,5 @@
 @import './fonts.scss';
+@import './colors.scss';
 
 h1 {
   font-family: $font-h1;
@@ -9,5 +10,12 @@ h2 {
 }
 
 p {
+  font-family: $font-p;
+}
+
+.btn {
+  background-color: $clr-background-btn;
+  border-radius: 10px;
+  color: #FFF;
   font-family: $font-p;
 }
