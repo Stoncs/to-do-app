@@ -1,3 +1,79 @@
+@import './styles/colors.scss';
+
 body {
-  background-color: aqua;
+  width: 100vw;
+  height: 100vh;
+  background-color: $clr-background-body;
+}
+
+.app {
+  height: 80%;
+  width: 80%;
+  margin: auto auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  &__header {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translate(-50%, -10px);
+
+  }
+}
+
+main {
+  background-color: $clr-background-to-do;;
+  height: 100%;
+}
+
+.to-do {
+  display: flex;
+  height: 100%;
+
+  &__panel {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__btn {
+    width: 70%;
+    background-color: $clr-background-btn;
+    
+  }
+
+  &__edit {
+    background-color: $clr-background-edit-section;
+    height: 100%;
+    width: 80%;
+  }
+}
+
+.to-do-item {
+  margin-top: 10px;
+  width: 90%;
+  background-color: red;
+
+  &__text {
+    position: relative;
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.edit {
+  text-align: center;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
