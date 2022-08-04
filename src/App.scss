@@ -50,6 +50,7 @@ main {
   }
 
   &__interaction-area {
+    border-left: 1px solid $clr-border-section;
     background-color: $clr-background-interaction-section;
     height: 100%;
     width: 80%;

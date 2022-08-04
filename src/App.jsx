@@ -3,14 +3,14 @@ import React from 'react';
 import { InteractionArea, Todos } from './components';
 import './App.scss';
 
-const listStatesApp = {
-  NOTHING: '',
+const LIST_STATES_APP = {
+  EMPTY: '',
   ADDING: 'Добавление новой цели',
   EDITING: 'Редактирование цели',
   VIEWING: 'Просмотр цели'
 };
 
-const noActiveItem = {id: null, title: '', desciption: '', progress: null};
+const NO_ACTIVE_ITEM = {id: null, title: '', desciption: '', progress: null};
 
 function App() {
   // items stores a list of todos with information about them
@@ -18,36 +18,39 @@ function App() {
   const [items, setItem] = React.useState([]);
 
   // stores and sets the selected to do item
-  const [activeItem, setActiveItem] = React.useState(noActiveItem);
+  const [activeItem, setActiveItem] = React.useState(NO_ACTIVE_ITEM);
   
   const onClickToDo = (item) => {
     setActiveItem(item);
-    setStateApp(listStatesApp.VIEWING);
+    setStateApp(LIST_STATES_APP.VIEWING);
   };
 
-  const [stateApp, setStateApp] = React.useState(listStatesApp.NOTHING);
+  // application state (empty || creating || viewing || editing)
+  const [stateApp, setStateApp] = React.useState(LIST_STATES_APP.EMPTY);
 
   // reference to div.app
   const $app = React.useRef();
+
+  // a function that is executed when an event occurs that removes the active element
+  const deselectActiveItem = () => {
+    setActiveItem(NO_ACTIVE_ITEM);
+    setStateApp(LIST_STATES_APP.EMPTY);
+    document.body.removeEventListener('click', handleOutsideClick);
+    document.body.removeEventListener('keydown', handleKeyDownEsc);
+  };
 
   // a function for the event handler to deselect the active element (click outside)
   const handleOutsideClick = (e) => {
     const path = e.path || (e.composedPath && e.composedPath());
     if (!path.includes($app.current)) {
-      setActiveItem(noActiveItem);
-      setStateApp(listStatesApp.NOTHING);
-      document.body.removeEventListener('click', handleOutsideClick);
-      document.body.removeEventListener('keydown', handleKeyDownEsc);
+      deselectActiveItem();
     }
   };
 
   // a function for the event handler to deselect the active element (press ESC)
   const handleKeyDownEsc = (e) => {
     if (e.keyCode === 27) {
-      setActiveItem(noActiveItem);
-      setStateApp(listStatesApp.NOTHING);
-      document.body.removeEventListener('click', handleOutsideClick);
-      document.body.removeEventListener('keydown', handleKeyDownEsc);
+      deselectActiveItem();
     }
   };
 
@@ -66,11 +69,11 @@ function App() {
       item
     ]);
     setActiveItem(item);
-    setStateApp(listStatesApp.VIEWING);
+    setStateApp(LIST_STATES_APP.VIEWING);
   };
 
   const onClickAddButton = () => {
-    setStateApp(listStatesApp.ADDING);
+    setStateApp(LIST_STATES_APP.ADDING);
   };
 
   return (
@@ -82,10 +85,9 @@ function App() {
             <div className='to-do__btn'>
               <button className='btn' onClick={onClickAddButton}>New TODO</button>
             </div>
-
           </div>
           <div className='to-do__interaction-area'>
-            <InteractionArea activeItem={activeItem} listStatesApp={listStatesApp} stateApp={stateApp} setStateApp={setStateApp} onClickSaveButton={onClickSaveButton} />
+            <InteractionArea activeItem={activeItem} LIST_STATES_APP={LIST_STATES_APP} stateApp={stateApp} setStateApp={setStateApp} onClickSaveButton={onClickSaveButton} />
           </div>
         </div>
       </main>
