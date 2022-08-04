@@ -10,7 +10,7 @@ export default function Todo({item, activeItem, setActiveItem}) {
   return (
     <div className={`to-do-item ${item.id === activeItem.id ? 'to-do-item__active' : ''}`} onClick={() => onClickToDo(item)}>
       <div className='to-do-item__text'>
-        <p>{item.text}</p>
+        <p>{item.title}</p>
       </div>
     </div>
   );

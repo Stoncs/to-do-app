@@ -49,18 +49,9 @@ main {
     }
   }
 
-  &__edit-area {
-    background-color: $clr-background-edit-section;
+  &__interaction-area {
+    background-color: $clr-background-interaction-section;
     height: 100%;
     width: 80%;
-  }
-}
-
-.edit-area {
-  text-align: center;
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 }

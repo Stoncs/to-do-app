@@ -1,0 +1,20 @@
+.edit-form {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  label {
+    display: flex;
+
+    p {
+      display: block;
+      width: 100px;
+    }
+    input {
+      margin-left: 30px;
+    }
+    textarea {
+      margin-left: 30px;
+    }
+  }
+}

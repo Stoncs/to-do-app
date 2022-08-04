@@ -14,8 +14,13 @@ p {
 }
 
 .btn {
-  background-color: $clr-background-btn;
+  background-color: $clr-background-btn-blue;
   border-radius: 10px;
-  color: #FFF;
+  color: $clr-background-btn-white;
   font-family: $font-p;
+
+  &--white {
+    background-color: $clr-background-btn-white;
+    color: $clr-background-btn-blue
+  }
 }
