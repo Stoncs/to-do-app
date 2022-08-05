@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { InteractionArea, Todos } from './components';
+import { EditToDoArea, NewToDoArea, ViewingToDoArea, Todos } from './components';
 import './App.scss';
 
 const LIST_STATES_APP = {
@@ -10,17 +10,24 @@ const LIST_STATES_APP = {
   VIEWING: 'Просмотр цели'
 };
 
-const NO_ACTIVE_ITEM = {id: null, title: '', desciption: '', progress: null};
+const NO_ACTIVE_ITEM = {id: null, title: '', description: '', progress: null};
 
 function App() {
   // items stores a list of todos with information about them
   // item = {id: number, title: string, description: string, progress: number}
-  const [items, setItem] = React.useState([]);
+  const [items, setItems] = React.useState([]);
 
   // stores and sets the selected to do item
   const [activeItem, setActiveItem] = React.useState(NO_ACTIVE_ITEM);
   
-  const onClickToDo = (item) => {
+  // function for selecting to do
+  const selectItem = (item) => {
+    if (stateApp === LIST_STATES_APP.ADDING) {
+      if (!confirm('Вы не сохранили новую цель. Вы уверены?')) return;
+    }
+    if (stateApp === LIST_STATES_APP.EDITING) {
+      if (!confirm('Вы не сохранили изменения. Вы уверены?')) return;
+    }
     setActiveItem(item);
     setStateApp(LIST_STATES_APP.VIEWING);
   };
@@ -62,18 +69,62 @@ function App() {
     }
   });
 
-  const onClickSaveButton = (item) => {
-    console.log(item);
-    setItem([
+  // function for adding new to do
+  const addNewToDo = (newItem) => {
+    setItems([
       ...items,
-      item
+      newItem
     ]);
-    setActiveItem(item);
+    setActiveItem(newItem);
     setStateApp(LIST_STATES_APP.VIEWING);
   };
 
+  // set state app = edditing
+  const editToDo = () => {
+    setStateApp(LIST_STATES_APP.EDITING);
+  };
+
+  const setViewingState = () => {
+    setStateApp(LIST_STATES_APP.VIEWING);
+  };
+
+  // function for saving edited to do
+  const saveEditedToDo = (editedItem) => {
+    setItems([
+      ...items.map((item) => item.id !== editedItem.id ? item : editedItem),
+    ]);
+    setActiveItem(editedItem);
+    setStateApp(LIST_STATES_APP.VIEWING);
+  };
+
+  // function for delete to do
+  const deleteToDo = (deletingItemId) => {
+    setItems([
+      ...items.filter((item) => item.id !== deletingItemId)
+    ]);
+    setActiveItem(NO_ACTIVE_ITEM);
+    setStateApp(LIST_STATES_APP.EMPTY);
+  };
+  // function on click add button
   const onClickAddButton = () => {
+    if (stateApp === LIST_STATES_APP.EDITING) {
+      if (!confirm('Вы не сохранили изменения. Вы уверены?')) return;
+    }
+    setActiveItem(NO_ACTIVE_ITEM);
     setStateApp(LIST_STATES_APP.ADDING);
+  };
+
+  // Conditional rendering based on application state
+  const renderSwitch = (stateApp) => {
+    switch (stateApp) {
+    case LIST_STATES_APP.EDITING: 
+      return <EditToDoArea  activeItem={activeItem} saveEditedToDo={saveEditedToDo} setViewingState={setViewingState} />;
+    case LIST_STATES_APP.ADDING:
+      return <NewToDoArea stateApp={stateApp} setStateApp={setStateApp} STATE_EMPTY={LIST_STATES_APP.EMPTY} addNewToDo={addNewToDo}/>;
+    case LIST_STATES_APP.VIEWING:
+      return <ViewingToDoArea activeItem={activeItem} editToDo={editToDo} deleteToDo={deleteToDo} />;
+    default: return <div>{stateApp}</div>;
+    }
   };
 
   return (
@@ -81,13 +132,15 @@ function App() {
       <main>
         <div className='to-do'>
           <div className='to-do__panel'>
-            <Todos items={items} activeItem={activeItem} setActiveItem={onClickToDo}/>
+            <Todos items={items} activeItem={activeItem} setActiveItem={selectItem}/>
             <div className='to-do__btn'>
               <button className='btn' onClick={onClickAddButton}>New TODO</button>
             </div>
           </div>
           <div className='to-do__interaction-area'>
-            <InteractionArea activeItem={activeItem} LIST_STATES_APP={LIST_STATES_APP} stateApp={stateApp} setStateApp={setStateApp} onClickSaveButton={onClickSaveButton} />
+            <div className='interaction-area'>
+              {renderSwitch(stateApp)}
+            </div>
           </div>
         </div>
       </main>

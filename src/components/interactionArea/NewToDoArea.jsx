@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './NewToDoArea.scss';
+import './InteractionArea.scss';
 
 import { useInput } from '../../customHooks';
 
-export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, onClickSaveButton}) {
+export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewToDo}) {
   // variables storing the state of inputs (also store errors)
   const title = useInput('', {isEmpty: true});
   const description = useInput('', {isEmpty: true});
@@ -19,11 +19,11 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, onClick
     e.preventDefault();
     if (!title.isEmptyError && !description.isEmptyError && !progress.isEmptyError){
       setShowErrors(false);
-      onClickSaveButton({
+      addNewToDo({
         id: Date.now(),
         title: title.value,
-        descripition: description.value,
-        progress: progress.value,
+        description: description.value,
+        progress: Number(progress.value),
       });
     } else {
       setShowErrors(true);
@@ -31,7 +31,8 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, onClick
   };
 
   // function for cancel button
-  const onCancel = () => {
+  const onCancel = (e) => {
+    e.preventDefault();
     setStateApp(STATE_EMPTY);
   };
 
@@ -84,5 +85,5 @@ NewToDoArea.propTypes = {
   stateApp: PropTypes.string.isRequired,
   setStateApp: PropTypes.func.isRequired,
   STATE_EMPTY: PropTypes.string.isRequired,
-  onClickSaveButton: PropTypes.func.isRequired,
+  addNewToDo: PropTypes.func.isRequired,
 };
