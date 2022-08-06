@@ -5,28 +5,31 @@ import './InteractionArea.scss';
 
 import { useInput } from '../../customHooks';
 
+const PROGRESS_STATUSES = {
+  awaiting: 'Ожидает',
+  inProgress: 'В процессе',
+  completed: 'Выполнена',
+};
+
+const progressList = Object.entries(PROGRESS_STATUSES).map(([, value]) => value);
+
 export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewToDo}) {
   // variables storing the state of inputs (also store errors)
   const title = useInput('', {isEmpty: true});
   const description = useInput('', {isEmpty: true});
-  const progress = useInput('', {isEmpty: true});
+  const progress = useInput(PROGRESS_STATUSES.awaiting);
 
-  // flag for showing errors (after submit if input values have errors => true, else => false)
-  const [showErrors, setShowErrors] = React.useState(false);
 
   // function for submit form
   const onSubmit = (e) => {
     e.preventDefault();
     if (!title.isEmptyError && !description.isEmptyError && !progress.isEmptyError){
-      setShowErrors(false);
       addNewToDo({
         id: Date.now(),
         title: title.value,
         description: description.value,
-        progress: Number(progress.value),
+        progress: progress.value,
       });
-    } else {
-      setShowErrors(true);
     }
   };
 
@@ -40,42 +43,39 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewT
   // 0 - completed
   // 1 - in progress
   // 2 - waiting
-  const _getRadioButtons = () => {
-    const radioBtns = [];
-    
-    for (let i = 0; i < 3; i++) {
-      radioBtns.push(<input key={i} type='radio' name='progress' onChange={progress.onChange} value={i} />);
-    }
-    return (
-      <div className='edit-from__radio-btns'>
-        {radioBtns.map((item) => item)}
-      </div>
-    );
-  };
 
   return (
     <form onSubmit={onSubmit} className='edit-form'>
       <h2>{stateApp}</h2>
-      <label>
-        <p>Название:</p>
-        <input type='text' name='title' value={title.value} onChange={title.onChange}/>
-      </label>
-      {showErrors && title.errorsMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
-      <label>
-        <p>Описание:</p>
-        <textarea name='description' value={description.value} onChange={description.onChange}/>
-      </label>
-      {showErrors && description.errorsMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
-      <label>
-        <p>Прогресс:</p>
-        {_getRadioButtons()}
-      </label>
-      {showErrors && progress.errorsMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
-      <div className='edit-form__btns'>
-        <button type='submit' className='btn'>Сохранить</button>
-        <button className='btn btn--white' onClick={onCancel}>Отменить</button>
+      <div className='edit-form__item'>
+        <label htmlFor='title' >Название:</label>
+        <div className="edit-form__wrapper">
+          <input className={(title.errorsMessages.length && title.isDirty) ? 'incorrect-input' : ''} type='text' name='title' value={title.value} onChange={title.onChange} />
+          {title.isDirty && title.errorsMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
+        </div>
+      </div>
+      
+      <div className="edit-form__item">
+        <label>Описание:</label>
+        <div className="edit-form__wrapper">
+          <textarea className={(description.errorsMessages.length && description.isDirty) ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} onBlur={description.onBlur} />
+          {description.isDirty && description.errorsMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
+        </div>
+      </div>
+      
+      <div className="edit-form__item edit-form__select">
+        <label htmlFor="progress">Прогресс:</label>
+        <div className="edit-form__wrapper">
+          <select defaultValue={PROGRESS_STATUSES.awaiting} onChange={progress.onChange} name="progress">
+            { progressList.map((item) => <option value={item} key={item}>{item}</option>)}
+          </select>
+        </div>
       </div>
 
+      <div className='edit-form__btns'>
+        <button type='submit' className='edit-form__btn btn'>Сохранить</button>
+        <button onClick={onCancel} className='edit-form__btn btn btn--white'>Отмена</button>
+      </div>
     </form>
   );
 }

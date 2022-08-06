@@ -21,6 +21,10 @@ p {
 
   &--white {
     background-color: $clr-background-btn-white;
-    color: $clr-background-btn-blue
+    color: $clr-background-btn-blue;
+  }
+
+  &--red {
+    background-color: $clr-background-btn-red;
   }
 }

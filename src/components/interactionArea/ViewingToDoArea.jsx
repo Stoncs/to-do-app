@@ -12,22 +12,42 @@ export default function ViewingToDoArea({activeItem, editToDo, deleteToDo}) {
     editToDo();
   };
 
-  const _getInformation = (obj) => {
-    const array = [];
-    for (let i in obj) {
-      if (i !== 'id') {
-        array.push(<div key={i}>{obj[i]}</div>);
-      }
-    }
-    return array;
-  };
+  // const _getInformation = (obj) => {
+  //   const array = [];
+  //   for (let i in obj) {
+  //     if (i !== 'id') {
+  //       array.push(<div className='view-panel__item' key={obj[i]}>{obj[i]}</div>);
+  //     }
+  //   }
+  //   return array;
+  // };
 
   return (
-    <div>
-      <h2>VIEWING</h2>
-      {_getInformation(activeItem)}
-      <button onClick={onClickEditButton} className='btn'>Редактировать</button>
-      <button onClick={onClickDeleteButton} className='btn'>Удалить</button> 
+    <div className='view-panel'>
+      <h2>Просмотр цели</h2>
+      <div className='view-panel__item'>
+        <div className='view-panel__label'>Название: </div>
+        <div className="view-panel__wrapper">
+          <div className='view-panel__text'>{activeItem.title}</div>
+        </div>
+      </div>
+      <div className='view-panel__item'>
+        <div className='view-panel__label'>Описание: </div>
+        <div className="view-panel__wrapper">
+          <div className='view-panel__text'>{activeItem.description.split('\n').map((line, index) => <p key={index} >{line}</p>)}</div>
+        </div>
+      </div>
+      <div className='view-panel__item'>
+        <div className='view-panel__label'>Прогресс: </div>
+        <div className="view-panel__wrapper">
+          <div className='view-panel__text'>{activeItem.progress}</div>
+        </div>
+      </div>
+
+      <div className='view-panel__btns'>
+        <button onClick={onClickEditButton} className='view-panel__btn btn'>Редактировать</button>
+        <button onClick={onClickDeleteButton} className='view-panel__btn btn btn--red'>Удалить</button> 
+      </div>
     </div>
   );
 }

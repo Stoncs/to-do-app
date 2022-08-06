@@ -6,7 +6,7 @@ export default function useValidation(value, validators) {
   const [errorsMessages, setErrorsMessages] = React.useState([]);
 
   // states of input
-  const [isEmpty, setEmpty] = React.useState(true);
+  const [isEmpty, setEmpty] = React.useState(false);
 
   const setEmptyError = (valueError) => {
     const emptyErrorMessage = 'Поле не должно быть пустым';
@@ -26,7 +26,6 @@ export default function useValidation(value, validators) {
 
   React.useEffect(() => {
     for (const validation in validators) {
-
       // for validation extension add new case
       switch (validation) {
       case 'isEmpty':

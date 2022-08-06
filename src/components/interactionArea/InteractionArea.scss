@@ -1,4 +1,5 @@
 @import './../../styles/colors.scss';
+@import './../../styles/fonts.scss';
 
 .interaction-area {
   width: 100%;
@@ -6,23 +7,134 @@
   justify-content: center;
 }
 
-.edit-form {
+.view-panel {
+  margin-top: 20px;
   width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  label {
-    display: flex;
+  font-size: 15px;
 
-    p {
-      display: block;
-      width: 100px;
+  h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  &__label {
+    display: block;
+    font-family: $font-p;
+    display: flex;
+    line-height: 1.5;
+    width: 25%;
+    margin-top: 5px;
+  }
+
+
+  &__wrapper {
+    width: 75%;
+    font-family: $font-p;
+    line-height: 1.5;
+  }
+
+  &__text {
+    padding: 5px 1em 5px 5px;
+    background-color: white;
+    border-radius: 5px;
+    font-size: 15px;
+    width: 100%;
+    word-wrap: break-word;
+  }
+
+  &__item {
+    display: flex;
+    width: 60%;
+    margin-bottom: 30px;
+  }
+
+  &__btns {
+    display: flex;
+  }
+
+  &__btn {
+    width: 150px;
+    height: 36px;
+    font-size: 15px;
+
+    &:not(:last-of-type) {
+      margin-right: 20px;
+    }
+  }
+}
+
+.edit-form {
+  margin-top: 20px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 15px;
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-family: $font-p;
+    display: flex;
+    width: 25%;
+    text-align: center;
+    margin-top: 7px;
+  }
+
+  &__wrapper {
+    width: 75%;
+    font-family: $font-p;
+    line-height: 1.5;
+
+    textarea {
+      font-size: 15px;
+      resize: none;
+      min-width: 100%;
+      min-height: 100px;
     }
     input {
-      margin-left: 30px;
+      font-size: 15px;
+      width: 100%;
     }
-    textarea {
-      margin-left: 30px;
+    select {
+      font-family: $font-p;
+      font-size: 1.5;
+    }
+    p {
+      font-size: 15px;
+      margin-bottom: -1.5em;
+      color: $clr-error;
+    }
+  }
+
+  &__item {
+    display: flex;
+    width: 60%;
+    margin-bottom: 30px;
+  }
+
+  &__select {
+    label {
+      align-self: center;
+    }
+  }
+
+  &__btns {
+    display: flex;
+  }
+
+  &__btn {
+    width: 150px;
+    height: 36px;
+
+    &:not(:last-of-type) {
+      margin-right: 20px;
     }
   }
 }

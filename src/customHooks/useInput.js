@@ -5,6 +5,7 @@ import { useValidation } from './';
 export default function useInput(initialValue, validations) {
   // value of input
   const [value, setValue] = React.useState(initialValue);
+  const [isDirty, setDirty] = React.useState(false);
   // validator
   const valid = useValidation(value, validations);
 
@@ -12,9 +13,15 @@ export default function useInput(initialValue, validations) {
     setValue(e.target.value);
   };
 
+  const onBlur = () => {
+    setDirty(true);
+  };
+
   return {
     value,
     onChange,
+    onBlur,
+    isDirty,
     ...valid,
   };
 };

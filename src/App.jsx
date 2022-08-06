@@ -10,11 +10,11 @@ const LIST_STATES_APP = {
   VIEWING: 'Просмотр цели'
 };
 
-const NO_ACTIVE_ITEM = {id: null, title: '', description: '', progress: null};
+const NO_ACTIVE_ITEM = {id: null, title: '', description: '', progress: ''};
 
 function App() {
   // items stores a list of todos with information about them
-  // item = {id: number, title: string, description: string, progress: number}
+  // item = {id: number, title: string, description: string, progress: string}
   const [items, setItems] = React.useState([]);
 
   // stores and sets the selected to do item
@@ -22,12 +22,6 @@ function App() {
   
   // function for selecting to do
   const selectItem = (item) => {
-    if (stateApp === LIST_STATES_APP.ADDING) {
-      if (!confirm('Вы не сохранили новую цель. Вы уверены?')) return;
-    }
-    if (stateApp === LIST_STATES_APP.EDITING) {
-      if (!confirm('Вы не сохранили изменения. Вы уверены?')) return;
-    }
     setActiveItem(item);
     setStateApp(LIST_STATES_APP.VIEWING);
   };
@@ -42,17 +36,10 @@ function App() {
   const deselectActiveItem = () => {
     setActiveItem(NO_ACTIVE_ITEM);
     setStateApp(LIST_STATES_APP.EMPTY);
-    document.body.removeEventListener('click', handleOutsideClick);
     document.body.removeEventListener('keydown', handleKeyDownEsc);
+    console.log('listener removed');
   };
 
-  // a function for the event handler to deselect the active element (click outside)
-  const handleOutsideClick = (e) => {
-    const path = e.path || (e.composedPath && e.composedPath());
-    if (!path.includes($app.current)) {
-      deselectActiveItem();
-    }
-  };
 
   // a function for the event handler to deselect the active element (press ESC)
   const handleKeyDownEsc = (e) => {
@@ -64,8 +51,8 @@ function App() {
   // add event listeners on body if active item != null
   React.useEffect(() => {
     if (activeItem.id !== null) {
-      document.body.addEventListener('click', handleOutsideClick);
       document.body.addEventListener('keydown', handleKeyDownEsc);
+      console.log('listner added');
     }
   });
 
@@ -107,9 +94,6 @@ function App() {
   };
   // function on click add button
   const onClickAddButton = () => {
-    if (stateApp === LIST_STATES_APP.EDITING) {
-      if (!confirm('Вы не сохранили изменения. Вы уверены?')) return;
-    }
     setActiveItem(NO_ACTIVE_ITEM);
     setStateApp(LIST_STATES_APP.ADDING);
   };

@@ -1,0 +1,24 @@
+@import './colors.scss';
+
+input[type='text'], textarea {
+  padding: 5px 1em 5px 5px;
+  
+  &:focus {
+    border-bottom: 1px solid $clr-border-section;
+  }
+  
+}
+
+.incorrect-input, input[type='text']:focus.incorrect-input, textarea:focus.incorrect-input {
+  border-bottom: 1px solid $clr-error;
+}
+
+select {
+  padding: 5px 1em 5px 5px;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+}
