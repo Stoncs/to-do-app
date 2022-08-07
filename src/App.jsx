@@ -15,13 +15,25 @@ const NO_ACTIVE_ITEM = {id: null, title: '', description: '', progress: ''};
 function App() {
   // items stores a list of todos with information about them
   // item = {id: number, title: string, description: string, progress: string}
-  const [items, setItems] = React.useState([]);
+  const [items, setItems] = React.useState((() => {
+    // getting stored value
+    const saved = localStorage.getItem('items');
+    const initialValue = JSON.parse(saved);
+    console.log(initialValue);
+    return initialValue || [];
+  }));
 
   // stores and sets the selected to do item
   const [activeItem, setActiveItem] = React.useState(NO_ACTIVE_ITEM);
   
   // function for selecting to do
   const selectItem = (item) => {
+    if (stateApp === LIST_STATES_APP.ADDING) {
+      if (!confirm('Вы не сохранили новую цель. Вы уверены, что хотите выйти?')) return;
+    } 
+    if (stateApp === LIST_STATES_APP.EDITING) {
+      if (!confirm('Вы не сохранили цель. Вы уверены, что хотите выйти?')) return;
+    }
     setActiveItem(item);
     setStateApp(LIST_STATES_APP.VIEWING);
   };
@@ -58,16 +70,19 @@ function App() {
     }
   }, []);
 
-  // add event listeners on body if active item != null
+  // add event listener on body if active item != null
   React.useEffect(() => {
-
     if ((activeItem.id !== null || stateApp === LIST_STATES_APP.ADDING) && !isEventListenerActive) {  
       document.body.addEventListener('keydown', handleKeyDownEsc, false);
       console.log('add eventListener');
       setEventListenerActive(true);
     }
-
   }, [activeItem, stateApp]);
+
+  // set items to the local storage
+  React.useEffect(() => {
+    localStorage.setItem('items', JSON.stringify(items));
+  }, [items]);
 
   // function for adding new to do
   const addNewToDo = (newItem) => {
@@ -107,6 +122,12 @@ function App() {
   };
   // function on click add button
   const onClickAddButton = () => {
+    if (stateApp === LIST_STATES_APP.ADDING) {
+      if (!confirm('Вы не сохранили новую цель. Вы уверены, что хотите выйти?')) return;
+    } 
+    if (stateApp === LIST_STATES_APP.EDITING) {
+      if (!confirm('Вы не сохранили цель. Вы уверены, что хотите выйти?')) return;
+    }
     setActiveItem(NO_ACTIVE_ITEM);
     setStateApp(LIST_STATES_APP.ADDING);
   };
