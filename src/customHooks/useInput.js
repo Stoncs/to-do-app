@@ -22,6 +22,7 @@ export default function useInput(initialValue, validations) {
     onChange,
     onBlur,
     isDirty,
+    setDirty,
     ...valid,
   };
 };

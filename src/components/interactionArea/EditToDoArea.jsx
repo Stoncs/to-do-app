@@ -17,6 +17,7 @@ export default function EditToDoArea({activeItem, saveEditedToDo, setViewingStat
   const title = useInput(activeItem.title , {isEmpty: true});
   const description = useInput(activeItem.description, {isEmpty: true});
   const progress = useInput(activeItem.progress);
+  const arrayInputs = [title, description, progress];
 
   const onClickCancelButton = (e) => {
     e.preventDefault();
@@ -25,8 +26,7 @@ export default function EditToDoArea({activeItem, saveEditedToDo, setViewingStat
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // console.log(title.isEmptyError, description.isEmptyError, progress.isEmptyError);
-    if (!title.isEmptyError && !description.isEmptyError && !progress.isEmptyError){
+    if (arrayInputs.every((input) => input.isEmptyError === false)){
       console.log('edited');
       saveEditedToDo({
         id: activeItem.id,
@@ -43,16 +43,16 @@ export default function EditToDoArea({activeItem, saveEditedToDo, setViewingStat
       <div className='edit-form__item'>
         <label htmlFor='title' >Название:</label>
         <div className="edit-form__wrapper">
-          <input className={title.errorsMessages.length ? 'incorrect-input' : ''} type='text' name='title' value={title.value} onChange={title.onChange} />
-          {title.errorsMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
+          <input className={title.errorMessages.length ? 'incorrect-input' : ''} type='text' name='title' value={title.value} onChange={title.onChange} />
+          {title.errorMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
         </div>
       </div>
       
       <div className="edit-form__item">
         <label>Описание:</label>
         <div className="edit-form__wrapper">
-          <textarea className={description.errorsMessages.length ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} />
-          {description.errorsMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
+          <textarea className={description.errorMessages.length ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} />
+          {description.errorMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
         </div>
       </div>
       

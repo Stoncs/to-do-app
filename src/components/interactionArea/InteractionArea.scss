@@ -106,10 +106,14 @@
       font-family: $font-p;
       font-size: 1.5;
     }
-    p {
-      font-size: 15px;
+  }
+  &__error {
+    font-size: 15px;
+    margin-bottom: -1.5em;
+    color: $clr-error;
+    &+& {
       margin-bottom: -1.5em;
-      color: $clr-error;
+      margin-top: 1.5em;
     }
   }
 

@@ -122,9 +122,6 @@ function App() {
   };
   // function on click add button
   const onClickAddButton = () => {
-    if (stateApp === LIST_STATES_APP.ADDING) {
-      if (!confirm('Вы не сохранили новую цель. Вы уверены, что хотите выйти?')) return;
-    } 
     if (stateApp === LIST_STATES_APP.EDITING) {
       if (!confirm('Вы не сохранили цель. Вы уверены, что хотите выйти?')) return;
     }

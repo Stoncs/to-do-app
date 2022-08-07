@@ -2,14 +2,14 @@
 
 input[type='text'], textarea {
   padding: 5px 1em 5px 5px;
-  
+  border-bottom: 1px solid transparent;
   &:focus {
     border-bottom: 1px solid $clr-border-section;
   }
   
 }
 
-.incorrect-input, input[type='text']:focus.incorrect-input, textarea:focus.incorrect-input {
+.incorrect-input, input[type='text'].incorrect-input, textarea.incorrect-input input[type='text']:focus.incorrect-input, textarea:focus.incorrect-input {
   border-bottom: 1px solid $clr-error;
 }
 
