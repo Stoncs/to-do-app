@@ -5,26 +5,46 @@
   margin-bottom: 5px;
   width: 80%;
   cursor: pointer;
-  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  border: 3px solid transparent;
 
   &__text {
-  border: 2px solid $clr-border-to-do-item;
-    height: 30px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  border: 3px solid transparent;
+  border-radius: 5px;
+  height: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
     p {
       width: 90%;
       line-height: 1.5;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
   }
 
-  &__active {
-    outline: 2px solid black;
-    outline-offset: 2px;
+  &__awaiting {
+    background-color: $clr-background-awaiting;
+    &-active {
+      border: 3px solid $clr-border-awaiting;
+      border-radius: 5px;
+    }
+  }
+  &__in-progress {
+    background-color: $clr-background-in-progress;
+    &-active {
+      border: 3px solid $clr-border-in-progress;
+      border-radius: 5px;
+    }
+  }
+  &__completed {
+    background-color: $clr-background-completed;
+    &-active {
+      border: 3px solid $clr-border-completed;
+      border-radius: 5px;
+    }
   }
 }
