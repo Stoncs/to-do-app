@@ -28,33 +28,46 @@ function App() {
 
   // application state (empty || creating || viewing || editing)
   const [stateApp, setStateApp] = React.useState(LIST_STATES_APP.EMPTY);
+  const stateRef = React.useRef();
+  stateRef.current = stateApp;
+  // state in order to understand if an event listener is hanging on the body
+  const [isEventListenerActive, setEventListenerActive] = React.useState(false);
+
 
   // reference to div.app
   const $app = React.useRef();
 
   // a function that is executed when an event occurs that removes the active element
-  const deselectActiveItem = () => {
+  const deselectActiveItem = React.useCallback(() => {
+    if (stateRef.current === LIST_STATES_APP.ADDING) {
+      if (!confirm('Вы не сохранили новую цель. Вы уверены, что хотите выйти?')) return;
+    } 
+    if (stateRef.current === LIST_STATES_APP.EDITING) {
+      if (!confirm('Вы не сохранили цель. Вы уверены, что хотите выйти?')) return;
+    }
     setActiveItem(NO_ACTIVE_ITEM);
     setStateApp(LIST_STATES_APP.EMPTY);
-    document.body.removeEventListener('keydown', handleKeyDownEsc);
-    console.log('listener removed');
-  };
-
+    document.body.removeEventListener('keydown', handleKeyDownEsc, false);
+    setEventListenerActive(false);
+  }, []);
 
   // a function for the event handler to deselect the active element (press ESC)
-  const handleKeyDownEsc = (e) => {
+  const handleKeyDownEsc = React.useCallback((e) => {
     if (e.keyCode === 27) {
-      deselectActiveItem();
+      deselectActiveItem(stateRef.current);
     }
-  };
+  }, []);
 
   // add event listeners on body if active item != null
   React.useEffect(() => {
-    if (activeItem.id !== null) {
-      document.body.addEventListener('keydown', handleKeyDownEsc);
-      console.log('listner added');
+
+    if ((activeItem.id !== null || stateApp === LIST_STATES_APP.ADDING) && !isEventListenerActive) {  
+      document.body.addEventListener('keydown', handleKeyDownEsc, false);
+      console.log('add eventListener');
+      setEventListenerActive(true);
     }
-  });
+
+  }, [activeItem, stateApp]);
 
   // function for adding new to do
   const addNewToDo = (newItem) => {
