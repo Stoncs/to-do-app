@@ -24,7 +24,7 @@ The use of frameworks and libraries other than React is not allowed. Commenting 
 
 ## Additional goals:
 
-* Add color indication of progress status of TODO notes execution (states: pending/in progress/completed); ❌  
+* Add color indication of progress status of TODO notes execution (states: pending/in progress/completed); ✅  
 * Add TODO notes search by name; ❌  
 * Add the ability to change the width of the list of names of TODO notes by holding and moving the right border with the mouse cursor; ❌  
-* Implement an application in React+JS or React+TS (preferably use createReactApp https://create-react-app.dev/); ❌  
+* Implement an application in React+JS or React+TS (preferably use createReactApp https://create-react-app.dev/); ✅  
