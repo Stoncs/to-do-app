@@ -27,8 +27,8 @@ export default function useValidation(value, validators) {
   }, [isMaxLinesError]);
 
   const emptyErrorMessage = 'Поле не должно быть пустым';
-  const maxLengthErrorMessage = (num) => `Длинна текста не должна превышать ${num} символов`;
-  const maxLineErrorMessage = (num) => `Максимальное количество новых строк ${num}`;
+  const maxLengthErrorMessage = (num) => `Длина текста не должна превышать ${num} символов`;
+  const maxLineErrorMessage = (num) => `Максимальное количество строк ${num}`;
 
   React.useEffect(() => {
     
@@ -37,7 +37,6 @@ export default function useValidation(value, validators) {
       switch (validation) {
       case 'maxLength': {
         const maxLength = validators[validation];
-        // console.log(value.trim().length, maxLength);
         value.length <= maxLength ? setIsMaxLengthError(false) : setIsMaxLengthError(true);
         break;
       }
@@ -46,17 +45,17 @@ export default function useValidation(value, validators) {
         break;
       case 'maxLines': {
         const maxLines = validators[validation];
-        value.match(/\n/g || []) <= maxLines ? setIsMaxLinesError(false) : setIsMaxLinesError(true);
+        const lines = value.match(/\n/g) !== null ? value.match(/\n/g).length : 0;
+        lines < maxLines ? setIsMaxLinesError(false) : setIsMaxLinesError(true);
       }
       }
-      
-
     }
   }, [value]);
 
   return {
     errorMessages,
     isEmptyError,
-    isMaxLengthError: isMaxLengthError,
+    isMaxLengthError,
+    isMaxLinesError,
   };
 };

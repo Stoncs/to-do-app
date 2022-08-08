@@ -13,9 +13,9 @@ const PROGRESS_STATUSES = {
 
 const progressList = Object.entries(PROGRESS_STATUSES).map(([, value]) => value);
 
-const maxLengthTitle = 2;
-const maxLengthDescription = 100;
-const maxLinesDescription = 2;
+const maxLengthTitle = 50;
+const maxLengthDescription = 300;
+const maxLinesDescription = 5;
 
 export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewToDo}) {
   // variables storing the state of inputs (also store errors)
@@ -23,12 +23,19 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewT
   const description = useInput('', {isEmpty: true, maxLength: maxLengthDescription, maxLines: maxLinesDescription});
   const progress = useInput(PROGRESS_STATUSES.awaiting);
   const arrayInputs = [title, description, progress];
+
   const $title = React.useRef();
+  const $description = React.useRef();
 
   React.useEffect(() => {
-    if (title.value.trim().length > maxLengthTitle && title.isDirty) {$title.current.style.color = 'red';}
+    if ((title.isEmptyError || title.isMaxLengthError) && title.isDirty) {$title.current.style.color = 'red';}
     else {$title.current.style.color = 'black';}
   }, [title]);
+
+  React.useEffect(() => {
+    if ((description.isEmptyError || description.isMaxLengthError || description.isMaxLinesError) && description.isDirty) {$description.current.style.color = 'red';}
+    else {$description.current.style.color = 'black';}
+  }, [description]);
   
   // function for submit form
   const onSubmit = (e) => {
@@ -68,7 +75,7 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewT
       <div className="edit-form__item">
         <label>Описание:</label>
         <div className="edit-form__wrapper">
-          <textarea maxLength={maxLengthDescription + 1} className={(description.errorMessages.length && description.isDirty) ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} onBlur={description.onBlur} />
+          <textarea ref={$description} maxLength={maxLengthDescription + 1} className={(description.errorMessages.length && description.isDirty) ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} onBlur={description.onBlur} />
           {description.isDirty && description.errorMessages.map((errorMessage, index) => <div className='edit-form__error' key={index}>{errorMessage}</div>)}
         </div>
       </div>
