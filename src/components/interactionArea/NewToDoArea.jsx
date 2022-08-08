@@ -55,8 +55,7 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewT
   };
 
   // function for cancel button
-  const onCancel = (e) => {
-    e.preventDefault();
+  const onCancel = () => {
     setStateApp(STATE_EMPTY);
   };
 
@@ -67,7 +66,7 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewT
         <label htmlFor='title' >Название:</label>
         <div className="edit-form__wrapper">
           {/* {console.log(title.errorMessages.length, title.isDirty)} */}
-          <input ref={$title} maxLength={maxLengthTitle + 1} className={(title.errorMessages.length && title.isDirty) ? 'incorrect-input' : ''} type='text' name='title' value={title.value} onChange={title.onChange} onBlur={title.onBlur} />
+          <input ref={$title} maxLength={maxLengthTitle + 1} className={(title.errorMessages.length && title.isDirty) ? 'incorrect-input' : ''} type='text' name='title' value={title.value} onChange={title.onChange} onBlur={title.onBlur} onPaste={e => e.preventDefault()} />
           {title.isDirty && title.errorMessages.map((errorMessage, index) => <div className='edit-form__error' key={index}>{errorMessage}</div>)}
         </div>
       </div>
@@ -75,7 +74,7 @@ export default function NewToDoArea({stateApp, setStateApp, STATE_EMPTY, addNewT
       <div className="edit-form__item">
         <label>Описание:</label>
         <div className="edit-form__wrapper">
-          <textarea ref={$description} maxLength={maxLengthDescription + 1} className={(description.errorMessages.length && description.isDirty) ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} onBlur={description.onBlur} />
+          <textarea ref={$description} maxLength={maxLengthDescription + 1} className={(description.errorMessages.length && description.isDirty) ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} onBlur={description.onBlur} onPaste={e => e.preventDefault()}/>
           {description.isDirty && description.errorMessages.map((errorMessage, index) => <div className='edit-form__error' key={index}>{errorMessage}</div>)}
         </div>
       </div>

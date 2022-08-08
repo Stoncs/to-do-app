@@ -12,29 +12,47 @@ const PROGRESS_STATUSES = {
 
 const progressList = Object.entries(PROGRESS_STATUSES).map(([, value]) => value);
 
+const maxLengthTitle = 50;
+const maxLengthDescription = 300;
+const maxLinesDescription = 5;
+
 export default function EditToDoArea({activeItem, saveEditedToDo, setViewingState}) {
   // variables storing the state of inputs (also store errors)
-  const title = useInput(activeItem.title , {isEmpty: true});
-  const description = useInput(activeItem.description, {isEmpty: true});
+  const title = useInput(activeItem.title , {isEmpty: true, maxLength: maxLengthTitle});
+  const description = useInput(activeItem.description, {isEmpty: true, maxLength: maxLengthDescription, maxLines: maxLinesDescription});
   const progress = useInput(activeItem.progress);
   const arrayInputs = [title, description, progress];
 
-  const onClickCancelButton = (e) => {
-    e.preventDefault();
+  const $title = React.useRef();
+  const $description = React.useRef();
+
+  React.useEffect(() => {
+    if ((title.isEmptyError || title.isMaxLengthError) && title.isDirty) {$title.current.style.color = 'red';}
+    else {$title.current.style.color = 'black';}
+  }, [title]);
+
+  React.useEffect(() => {
+    if ((description.isEmptyError || description.isMaxLengthError || description.isMaxLinesError) && description.isDirty) {$description.current.style.color = 'red';}
+    else {$description.current.style.color = 'black';}
+  }, [description]);
+
+  const onClickCancelButton = () => {
     setViewingState();
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (arrayInputs.every((input) => input.isEmptyError === false)){
-      console.log('edited');
+    const lengthsErrorMessages = arrayInputs.map((input) => input.errorMessages.length);
+    if (lengthsErrorMessages.every((length) => length === 0)){
       saveEditedToDo({
         id: activeItem.id,
         title: title.value,
         description: description.value,
         progress: progress.value,
       });
-    } 
+    } else {
+      arrayInputs.forEach((input) => input.setDirty(true));
+    }
   };
 
   return (
@@ -43,16 +61,16 @@ export default function EditToDoArea({activeItem, saveEditedToDo, setViewingStat
       <div className='edit-form__item'>
         <label htmlFor='title' >Название:</label>
         <div className="edit-form__wrapper">
-          <input className={title.errorMessages.length ? 'incorrect-input' : ''} type='text' name='title' value={title.value} onChange={title.onChange} />
-          {title.errorMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
+          <input ref={$title} maxLength={maxLengthTitle} className={title.errorMessages.length ? 'incorrect-input' : ''} type='text' name='title' value={title.value} onChange={title.onChange} onBlur={title.onBlur} onPaste={e => e.preventDefault()}/>
+          {title.isDirty && title.errorMessages.map((errorMessage, index) => <div className='edit-form__error' key={index}>{errorMessage}</div>)}
         </div>
       </div>
       
       <div className="edit-form__item">
         <label>Описание:</label>
         <div className="edit-form__wrapper">
-          <textarea className={description.errorMessages.length ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} />
-          {description.errorMessages.map((errorMessage, index) => <p key={index}>{errorMessage}</p>)}
+          <textarea ref={$description} maxLength={maxLengthDescription + 1} className={description.errorMessages.length ? 'incorrect-input' : ''} name='description' value={description.value} onChange={description.onChange} onBlur={description.onBlur} onPaste={e => e.preventDefault()} />
+          {description.isDirty && description.errorMessages.map((errorMessage, index) => <div className='edit-form__error' key={index}>{errorMessage}</div>)}
         </div>
       </div>
       

@@ -12,7 +12,7 @@ export default function useValidation(value, validators) {
 
   // for validation extension add new useEffect which will add the error message to the array
   React.useEffect(() => {
-    if (isEmptyError) setErrorMessages([...errorMessages, emptyErrorMessage]);
+    if (isEmptyError) {setErrorMessages([...errorMessages, emptyErrorMessage]); console.log(isEmptyError);}
     else setErrorMessages([...errorMessages.filter((errorMesage) => errorMesage !== emptyErrorMessage)]);
   }, [isEmptyError]);
 
@@ -41,7 +41,7 @@ export default function useValidation(value, validators) {
         break;
       }
       case 'isEmpty': 
-        value.replace(/[\n ]/g, '') ? setIsEmpty(false) : setIsEmpty(true);
+        value.replace(/[\n ]/g, '').length ? setIsEmpty(false) : setIsEmpty(true);
         break;
       case 'maxLines': {
         const maxLines = validators[validation];
