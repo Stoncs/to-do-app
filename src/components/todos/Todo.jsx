@@ -1,15 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Context from '../../Context';
 
 import './Todo.scss';
 
-const PROGRESS_STATUSES = {
-  awaiting: 'Ожидает',
-  inProgress: 'В процессе',
-  completed: 'Выполнена',
-};
 
-export default function Todo({item, activeItem, setActiveItem}) {
+export default function Todo({ item }) {
+  const {
+    activeItem, setActiveItem, 
+    stateApp, setViewingState,
+    LIST_APP_STATES, PROGRESS_STATUSES
+  } = React.useContext(Context);
+
+  // Function on click to do item
+  const selectItem = (currentItem) => {
+    // If the user is editing or creating a new to do and has not saved it, a confirmation of the action is required
+    if (stateApp === LIST_APP_STATES.ADDING) {
+      if (!confirm('Вы не сохранили новую цель. Вы уверены, что хотите выйти?')) return;
+    } 
+    if (stateApp === LIST_APP_STATES.EDITING) {
+      if (!confirm('Вы не сохранили цель. Вы уверены, что хотите выйти?')) return;
+    }
+    // Set new active item ans set state app = viewing
+    setActiveItem(currentItem);
+    setViewingState();
+  };
+
+  // Function to get class names for to do item
   const getClassNames = () => {
     let result;
     switch (item.progress) {
@@ -28,24 +44,12 @@ export default function Todo({item, activeItem, setActiveItem}) {
     }
     return result;
   };
-  const onClickToDo = (item) => {
-    setActiveItem(item);
-  };
+
   return (
-    <div className={'to-do-item }'} onClick={() => onClickToDo(item)}>
+    <div className='to-do-item }' onClick={() => selectItem(item)}>
       <div className={`to-do-item__text ${getClassNames()}`}>
         <p>{item.title}</p>
       </div>
     </div>
   );
 }
-
-Todo.propTypes = {
-  item: PropTypes.object.isRequired,
-  activeItem: PropTypes.object,
-  setActiveItem: PropTypes.func.isRequired,
-};
-
-Todo.defaultProps = {
-  activeItem: null
-};

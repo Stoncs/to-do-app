@@ -1,18 +1,33 @@
 import React from 'react';
 
 // Custom Hook for validation form input states
-export default function useValidation(value, validators) {
-  // array of errors messages necessary in case of complication of verification
-  const [errorMessages, setErrorMessages] = React.useState([]);
 
-  // states of input
+// For validation extension:
+// * add new error message
+// * add new useEffect which will update an array with error
+// * add new case in validation
+
+// Returns:
+// * array of error messages
+// * errors states
+export default function useValidation(value, validators) {
+  // Errors states
   const [isEmptyError, setIsEmpty] = React.useState(false);
   const [isMaxLengthError, setIsMaxLengthError] = React.useState(false);
   const [isMaxLinesError, setIsMaxLinesError] = React.useState(false);
 
-  // for validation extension add new useEffect which will add the error message to the array
+  // Array of error messages
+  const [errorMessages, setErrorMessages] = React.useState([]);
+
+  // Error messages
+  const emptyErrorMessage = 'Поле не должно быть пустым';
+  const maxLengthErrorMessage = (num) => `Длина текста не должна превышать ${num} символов`;
+  const maxLineErrorMessage = (num) => `Максимальное количество строк ${num}`;
+  
+  // ------------------------------------------------------------------
+  // Functions that update an array with error messages
   React.useEffect(() => {
-    if (isEmptyError) {setErrorMessages([...errorMessages, emptyErrorMessage]); console.log(isEmptyError);}
+    if (isEmptyError) setErrorMessages([...errorMessages, emptyErrorMessage]);
     else setErrorMessages([...errorMessages.filter((errorMesage) => errorMesage !== emptyErrorMessage)]);
   }, [isEmptyError]);
 
@@ -26,14 +41,11 @@ export default function useValidation(value, validators) {
     else setErrorMessages([...errorMessages.filter((errorMesage) => errorMesage !== maxLineErrorMessage(validators['maxLines']))]);
   }, [isMaxLinesError]);
 
-  const emptyErrorMessage = 'Поле не должно быть пустым';
-  const maxLengthErrorMessage = (num) => `Длина текста не должна превышать ${num} символов`;
-  const maxLineErrorMessage = (num) => `Максимальное количество строк ${num}`;
+  // ------------------------------------------------------------------
 
   React.useEffect(() => {
-    
+    // Input field value validations for errors
     for (const validation in validators) {
-      // for validation extension add new case
       switch (validation) {
       case 'maxLength': {
         const maxLength = validators[validation];
