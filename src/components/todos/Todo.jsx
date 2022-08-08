@@ -46,7 +46,7 @@ export default function Todo({ item }) {
   };
 
   return (
-    <div className='to-do-item }' onClick={() => selectItem(item)}>
+    <div className='to-do-item' onClick={() => selectItem(item)}>
       <div className={`to-do-item__text ${getClassNames()}`}>
         <p>{item.title}</p>
       </div>

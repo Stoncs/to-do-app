@@ -159,7 +159,7 @@ function App() {
         <main>
           <div className='to-do'>
             <div className='to-do__panel'>
-              <Todos items={items} />
+              <Todos items={items} setItems={setItems} />
               <div className='to-do__btn'>
                 <button className='btn' onClick={onClickAddButton}>New TODO</button>
               </div>

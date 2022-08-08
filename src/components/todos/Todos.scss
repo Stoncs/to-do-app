@@ -1,4 +1,5 @@
 @import './../../styles/colors.scss';
+@import './../../styles/fonts.scss';
 
 .to-dos {
   display: flex;
@@ -9,17 +10,36 @@
   margin-left: 10px;
 
 
-  &__title {
+  &__header {
+    margin-top: 15px;
     background-color: $clr-background-to-do;
     width: 100%;
     min-height: 40px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     h2 {
       font-size: 18px;
+      margin-bottom: 10px;
     }
+  }
+
+  &__form {
+    width: 95%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__search-input {
+    width: 80%;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-family: $font-p;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 5px 10px;
   }
 
   &__list {
