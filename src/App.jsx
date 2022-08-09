@@ -73,7 +73,9 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('items', JSON.stringify(items));
   }, [items]);
-    
+
+  // Logic for closing edit panel, create panel and view panel by press esc
+  // -------------------------------------------------------------------------------
   // Reference to stateApp
   const stateAppRef = React.useRef();
   stateAppRef.current = stateApp;
@@ -109,6 +111,60 @@ function App() {
       document.body.addEventListener('keydown', handleKeyDownEsc, false);
     }
   }, [activeItem, stateApp]);
+  // -------------------------------------------------------------------------------
+
+  // Logic for changing widths of interaction area and to do panel
+  // -------------------------------------------------------------------------
+  // References for DOM-elements
+  const $toDoPanel = React.useRef();
+  const $interactionArea = React.useRef();
+  const $resizeLine = React.useRef();
+
+  // Note: I tried wrapping this function in a debounce, but with delay values greater than 5 ms, the resizing lags
+  // Function which contributes to changing the width of the panel
+  const mouseInterception = React.useCallback((e) => {
+    // Necessary for calculating by what value to change the width
+    let prevX = e.clientX;
+
+    // Max and min values width of to do panel
+    const maxWidthToDoPanel = Math.round(document.body.offsetWidth * 0.9 * 0.5);
+    const minWidthToDoPanel = Math.round(document.body.offsetWidth * 0.9 * 0.3);
+
+    const changeWidth = (e) => {
+      // Current x-coordinate of cursor
+      const currentX = e.clientX;
+      // Current widths of interaction area and to do panel
+      const currentWidthInteractionArea = $interactionArea.current.offsetWidth;
+      const currentWidthToDoPanel = $toDoPanel.current.offsetWidth;
+
+      // If the cursor has gone beyond the maximum or minimum value, we do not process
+      if (currentX < minWidthToDoPanel || currentX > maxWidthToDoPanel) 
+        return;
+
+      const differenceX = currentX - prevX;
+
+      // New widths of interaction area and to do panel
+      const newWidthInteractionArea = currentWidthInteractionArea - differenceX;
+      const newWidthToDoPanel = currentWidthToDoPanel + differenceX;
+
+      // Set new widths in styles
+      $interactionArea.current.style.width = `${newWidthInteractionArea}px`;
+      $toDoPanel.current.style.width = `${newWidthToDoPanel}px`;
+
+      // Set previous value of x-coordinate
+      prevX = currentX;
+    };
+
+    // Function for removing listeners
+    const removeMouseMoveEventListener = () => {
+      document.body.removeEventListener('mousemove', changeWidth, false);
+      document.body.removeEventListener('mouseup', removeMouseMoveEventListener, false);
+    }; 
+
+    // Mousemove wiil change width, mouseup will remove listeners
+    document.body.addEventListener('mousemove', changeWidth, false);
+    document.body.addEventListener('mouseup', removeMouseMoveEventListener, false);
+  });
 
   // Conditional rendering based on application state
   const getInteractionArea = (stateApp) => {
@@ -143,8 +199,9 @@ function App() {
       />;
     }
   };
-    
-  // function on click add button
+
+      
+  // Function on click add button
   const onClickAddButton = () => {
     if (stateApp === LIST_APP_STATES.EDITING) {
       if (!confirm('Вы не сохранили цель. Вы уверены, что хотите выйти?')) return;
@@ -158,13 +215,14 @@ function App() {
       <div className='app' ref={$app}>
         <main>
           <div className='to-do'>
-            <div className='to-do__panel'>
+            <div ref={$toDoPanel} className='to-do__panel'>
               <Todos items={items} setItems={setItems} />
               <div className='to-do__btn'>
                 <button className='btn' onClick={onClickAddButton}>New TODO</button>
               </div>
             </div>
-            <div className='to-do__interaction-area'>
+            <div ref={$interactionArea} className='to-do__interaction-area'>
+              <div ref={$resizeLine} className='to-do__resize-line' onMouseDown={(e) => mouseInterception(e)} />
               <div className='interaction-area'>
                 {getInteractionArea(stateApp)}
               </div>
