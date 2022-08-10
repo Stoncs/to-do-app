@@ -1,3 +1,5 @@
+@import './colors.scss';
+
 ::-webkit-scrollbar { /* 1 - скроллбар */
   width: 10px;
   height: 4px;
@@ -6,5 +8,5 @@
 
 ::-webkit-scrollbar-thumb { /* 5 - ползунок */
   border-radius: 2px;
-  background-color: #d1d1d1;
+  background-color: $clr-scroll;
 }
