@@ -7,7 +7,6 @@ The use of frameworks and libraries other than React is not allowed. Commenting 
 
 * Javascript
 * React.js
-* PropTypes
 * Scss
 
 ## Basic goals:  
