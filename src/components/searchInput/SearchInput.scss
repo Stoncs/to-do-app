@@ -16,6 +16,16 @@
     line-height: 1.5;
     padding: 5px 10px;
     padding-right: calc(10% + 20px);
+
+    &.awaiting {
+      background-color: $clr-background-awaiting;
+    }
+    &.in-progress {
+      background-color: $clr-background-in-progress;
+    }
+    &.completed {
+      background-color: $clr-background-completed;
+    }
   }
 
   &__arrow {

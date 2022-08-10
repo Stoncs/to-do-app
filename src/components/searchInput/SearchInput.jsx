@@ -3,11 +3,12 @@ import React from 'react';
 import downArrow from './../../assets/icons/down-arrow-svgrepo-com.svg';
 import './SearchInput.scss';
 
-export default function SearchInput({setValueSearchInput, filterItems, selectedFilterItem, setSelectedFilterItem}) {
+export default function SearchInput({setValueSearchInput, objFilterItems, selectedFilterItem, setSelectedFilterItem, backgroundColorInput }) {
   // isVisiblePopup determines if a popup should be shown
   // Changes when clicking on the icon
   const [isVisiblePopup, setIsVisiblePopup] = React.useState(false);
   // Chosen item in popup for filtration 
+  const filterItems = Object.values(objFilterItems);
 
   const $popup = React.useRef();
 
@@ -35,10 +36,23 @@ export default function SearchInput({setValueSearchInput, filterItems, selectedF
     setIsVisiblePopup(false);
   };
 
+  const getClassNameBackgroundColorInput = () => {
+    switch (backgroundColorInput) {
+    case '#ffe2dd':
+      return 'awaiting';
+    case '#fdecc8':
+      return 'in-progress';
+    case '#dbeddb':
+      return 'completed';
+    default: 
+      return '';
+    }
+  };
+
   return <form onSubmit={e => e.preventDefault()} className='form-search-input'>
     <input 
       type="search"
-      className='form-search-input__input'
+      className={`form-search-input__input ${getClassNameBackgroundColorInput()}`}
       placeholder='Поиск...'
       onChange={(e) => setValueSearchInput(e.target.value)}
     />

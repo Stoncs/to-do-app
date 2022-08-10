@@ -17,6 +17,12 @@ const PROGRESS_STATUSES = {
   completed: 'Выполнено',
 };
 
+const PROGRESS_STATUSES_BACKGROUND_COLORS = {
+  awaiting: '#ffe2dd',
+  inProgress: '#fdecc8',
+  completed: '#dbeddb',
+};
+
 // An object denoting the absence of an active item
 const NO_ACTIVE_ITEM = {id: null, title: '', description: '', progress: ''};
 
@@ -231,7 +237,10 @@ function App() {
         <main>
           <div className='to-do'>
             <div ref={$toDoPanel} className='to-do__panel'>
-              <Todos items={items} setItems={setItems} PROGRESS_STATUSES={PROGRESS_STATUSES} />
+              <Todos 
+                items={items} setItems={setItems} 
+                PROGRESS_STATUSES={PROGRESS_STATUSES}
+                PROGRESS_STATUSES_BACKGROUND_COLORS={PROGRESS_STATUSES_BACKGROUND_COLORS} />
               <div className='to-do__btn'>
                 <button className='btn' onClick={onClickAddButton}>New TODO</button>
               </div>
