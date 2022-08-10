@@ -1,7 +1,11 @@
 # React app "to do list"
 
 The goal of the assignment is to write a TODO List application.  
-The use of frameworks and libraries other than React is not allowed. Commenting on code with explanations is a must.
+The use of frameworks and libraries other than React is not allowed. Commenting on code with explanations is a must.  
+
+You can view the application here (the layout is not adaptive, so only on the desktop):  
+https://to-do-app-stoncs.herokuapp.com/
+
 
 ## Technologies
 
