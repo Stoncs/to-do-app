@@ -1,0 +1,75 @@
+@import './../../styles/fonts.scss';
+@import './../../styles/colors.scss';
+
+.form-search-input {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  &__input {
+    width: 80%;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-family: $font-p;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 5px 10px;
+    padding-right: calc(10% + 20px);
+  }
+
+  &__arrow {
+    width: 28px;
+    padding: 6px;
+    position: absolute;
+    right: calc(10% + 15px);
+    top: 50%;
+    transition: all 100ms linear;
+    transform: translate(0, -50%);
+    cursor: pointer;
+
+    &.rotated {
+      transform: translate(0, -50%) rotate(180deg);
+    }
+  }
+
+  &__popup {
+    display: none;
+    position: absolute;
+    right: 10%;
+    top: calc(100% + 5px);
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid $clr-border-section;
+
+    &.visible {
+      display: block;
+    }
+
+    .popup {
+      &__title {
+        display: block;
+        padding: 5px 10px;
+      }
+      &__item {
+        display: block;
+        padding: 5px 10px;
+
+        &-active {
+          display: block;
+          padding: 5px 10px;
+          background-color: $clr-border-to-do-item;
+          color: white;
+        }
+
+        &:hover {
+          background-color: $clr-background-interaction-section;
+        }
+      }
+    }
+  }
+}
+
+
+

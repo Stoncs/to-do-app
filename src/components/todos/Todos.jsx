@@ -3,22 +3,33 @@ import React from 'react';
 import Todo from './Todo.jsx';
 
 import './Todos.scss';
+import { SearchInput } from '../index.js';
 
-export default function Todos({ items }) {
+export default function Todos({ items, PROGRESS_STATUSES }) {
   const [valueSearchInput, setValueSearchInput] = React.useState('');
-  const filteredItems = items.filter((item) => item.title.toLowerCase().includes(valueSearchInput));
+  const arrayProgressStatusesForInput = ['Всем', ...Object.values(PROGRESS_STATUSES)];
+
+  const [selectedProgress, setSelectedProgress] = React.useState(arrayProgressStatusesForInput[0]); 
+
+  const filterFunction = (item) => {
+    if (selectedProgress === arrayProgressStatusesForInput[0]) {
+      return item.title.toLowerCase().includes(valueSearchInput);
+    } else {
+      return item.progress === selectedProgress && item.title.toLowerCase().includes(valueSearchInput);
+    }
+  };
+  const filteredItems = items.filter((item) => filterFunction(item));
+
   return (
     <div className='to-dos'>
       <div className='to-dos__header'>
         <h2>Список целей</h2>
-        <form className='to-dos__form'>
-          <input 
-            type="text"
-            className='to-dos__search-input'
-            placeholder='Поиск...'
-            onChange={(e) => setValueSearchInput(e.target.value)}
-          />
-        </form>
+        <SearchInput 
+          setValueSearchInput={setValueSearchInput} 
+          filterItems={arrayProgressStatusesForInput} 
+          selectedFilterItem={selectedProgress}
+          setSelectedFilterItem={setSelectedProgress}
+        />
       </div>
       <div className='to-dos__list'>
         {filteredItems.map((item) => <Todo key={item.id} item={item}/>)}

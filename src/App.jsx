@@ -12,9 +12,9 @@ const LIST_APP_STATES = {
 };
 
 const PROGRESS_STATUSES = {
-  awaiting: 'Ожидает',
+  awaiting: 'Не начато',
   inProgress: 'В процессе',
-  completed: 'Выполнена',
+  completed: 'Выполнено',
 };
 
 // An object denoting the absence of an active item
@@ -231,7 +231,7 @@ function App() {
         <main>
           <div className='to-do'>
             <div ref={$toDoPanel} className='to-do__panel'>
-              <Todos items={items} setItems={setItems} />
+              <Todos items={items} setItems={setItems} PROGRESS_STATUSES={PROGRESS_STATUSES} />
               <div className='to-do__btn'>
                 <button className='btn' onClick={onClickAddButton}>New TODO</button>
               </div>
