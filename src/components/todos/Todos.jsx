@@ -5,29 +5,31 @@ import Todo from './Todo.jsx';
 import './Todos.scss';
 import { SearchInput } from '../index.js';
 
-export default function Todos({ items, PROGRESS_STATUSES, PROGRESS_STATUSES_BACKGROUND_COLORS }) {
+export default function Todos({ items, PROGRESS_STATUSES }) {
+  // Value of the search input
   const [valueSearchInput, setValueSearchInput] = React.useState('');
+  // Object for set filtering
   const progressStatusesForInput = {
     all: 'Всем', 
     ...PROGRESS_STATUSES,
   };
 
-  const [selectedProgress, setSelectedProgress] = React.useState(progressStatusesForInput.all);
-
-  const backgroundColorInput = React.useMemo(() => {
-    const key = Object.keys(PROGRESS_STATUSES).find((key) => {
-      return PROGRESS_STATUSES[key] === selectedProgress;
-    });
-    return key !== undefined ? PROGRESS_STATUSES_BACKGROUND_COLORS[key] : '';
-  }, [selectedProgress]);
+  // selectedProgressObject - Object
+  const [selectedProgressObject, setSelectedProgressObject] = React.useState({all: 'Всем'});
 
   const filterFunction = (item) => {
-    if (selectedProgress === progressStatusesForInput.all) {
+    // Get value of selected progress
+    const valueSelectedProgress = Object.entries(selectedProgressObject)[0][1];
+    
+    if (valueSelectedProgress === progressStatusesForInput.all) {
+      // Filtering on all elements
       return item.title.toLowerCase().includes(valueSearchInput);
     } else {
-      return item.progress === selectedProgress && item.title.toLowerCase().includes(valueSearchInput);
+      // Filtering by elements of only the selected progress
+      return item.progress === valueSelectedProgress && item.title.toLowerCase().includes(valueSearchInput);
     }
   };
+
   const filteredItems = items.filter((item) => filterFunction(item));
 
   return (
@@ -37,9 +39,8 @@ export default function Todos({ items, PROGRESS_STATUSES, PROGRESS_STATUSES_BACK
         <SearchInput 
           setValueSearchInput={setValueSearchInput} 
           objFilterItems={progressStatusesForInput} 
-          selectedFilterItem={selectedProgress}
-          setSelectedFilterItem={setSelectedProgress}
-          backgroundColorInput={backgroundColorInput}
+          selectedFilterItemObject={selectedProgressObject}
+          setSelectedFilterItemObject={setSelectedProgressObject}
         />
       </div>
       <div className='to-dos__list'>

@@ -17,12 +17,6 @@ const PROGRESS_STATUSES = {
   completed: 'Выполнено',
 };
 
-const PROGRESS_STATUSES_BACKGROUND_COLORS = {
-  awaiting: '#ffe2dd',
-  inProgress: '#fdecc8',
-  completed: '#dbeddb',
-};
-
 // An object denoting the absence of an active item
 const NO_ACTIVE_ITEM = {id: null, title: '', description: '', progress: ''};
 
@@ -72,7 +66,7 @@ function App() {
   const contextValues = {
     activeItem, setActiveItem, 
     stateApp, setViewingState,
-    LIST_APP_STATES, PROGRESS_STATUSES
+    LIST_APP_STATES, PROGRESS_STATUSES,
   };
 
   // Set items to the local storage
@@ -239,10 +233,10 @@ function App() {
             <div ref={$toDoPanel} className='to-do__panel'>
               <Todos 
                 items={items} setItems={setItems} 
-                PROGRESS_STATUSES={PROGRESS_STATUSES}
-                PROGRESS_STATUSES_BACKGROUND_COLORS={PROGRESS_STATUSES_BACKGROUND_COLORS} />
+                PROGRESS_STATUSES={PROGRESS_STATUSES} 
+              />
               <div className='to-do__btn'>
-                <button className='btn' onClick={onClickAddButton}>New TODO</button>
+                <button className='btn' onClick={onClickAddButton}>Новая цель</button>
               </div>
             </div>
             <div ref={$interactionArea} className='to-do__interaction-area'>
