@@ -11,7 +11,6 @@ const LIST_APP_STATES = {
   VIEWING: 'Просмотр цели'
 };
 
-// 
 const PROGRESS_STATUSES = {
   awaiting: 'Ожидает',
   inProgress: 'В процессе',
@@ -21,6 +20,7 @@ const PROGRESS_STATUSES = {
 // An object denoting the absence of an active item
 const NO_ACTIVE_ITEM = {id: null, title: '', description: '', progress: ''};
 
+// Input restrictions
 const MAX_LENGTH_TITLE = 50;
 const MAX_LENGTH_DESCRIPTION = 300;
 const MAX_LINES_DESCRIPTION = 5;
@@ -113,12 +113,18 @@ function App() {
   }, [activeItem, stateApp]);
   // -------------------------------------------------------------------------------
 
-  // Logic for changing widths of interaction area and to do panel
+  // Logic for changing widths of interaction area and todo panel
   // -------------------------------------------------------------------------
   // References for DOM-elements
   const $toDoPanel = React.useRef();
   const $interactionArea = React.useRef();
   const $resizeLine = React.useRef();
+
+  // Get min possible width of todo panel
+  let minWidthToDoPanel;
+  React.useEffect(() => {
+    minWidthToDoPanel = $toDoPanel.current.offsetWidth;
+  }, [$toDoPanel]);
 
   // Note: I tried wrapping this function in a debounce, but with delay values greater than 5 ms, the resizing lags
   // Function which contributes to changing the width of the panel
@@ -126,26 +132,28 @@ function App() {
     // Necessary for calculating by what value to change the width
     let prevX = e.clientX;
 
-    // Max and min values width of to do panel
+    // Max and min values width of todo panel
     const maxWidthToDoPanel = Math.round(document.body.offsetWidth * 0.9 * 0.5);
-    const minWidthToDoPanel = Math.round(document.body.offsetWidth * 0.9 * 0.3);
+    // const minWidthToDoPanel = Math.round(document.body.offsetWidth * 0.9 * 0.3);
 
     const changeWidth = (e) => {
       // Current x-coordinate of cursor
       const currentX = e.clientX;
-      // Current widths of interaction area and to do panel
+
+      // Current widths of interaction area and todo panel
       const currentWidthInteractionArea = $interactionArea.current.offsetWidth;
       const currentWidthToDoPanel = $toDoPanel.current.offsetWidth;
 
-      // If the cursor has gone beyond the maximum or minimum value, we do not process
-      if (currentX < minWidthToDoPanel || currentX > maxWidthToDoPanel) 
-        return;
-
       const differenceX = currentX - prevX;
 
-      // New widths of interaction area and to do panel
+      // New widths of interaction area and todo panel
       const newWidthInteractionArea = currentWidthInteractionArea - differenceX;
       const newWidthToDoPanel = currentWidthToDoPanel + differenceX;
+
+      // If the cursor has gone beyond the maximum or minimum value, we do not process
+      if (newWidthToDoPanel < minWidthToDoPanel  || currentX > maxWidthToDoPanel) {
+        return;
+      }
 
       // Set new widths in styles
       $interactionArea.current.style.width = `${newWidthInteractionArea}px`;
@@ -165,6 +173,13 @@ function App() {
     document.body.addEventListener('mousemove', changeWidth, false);
     document.body.addEventListener('mouseup', removeMouseMoveEventListener, false);
   });
+
+  const setMinWidthToDoPanel = () => {
+    // Set new widths in styles
+    $toDoPanel.current.style.width = `${0}px`;
+    $interactionArea.current.style.width = `${Number.MAX_SAFE_INTEGER}px`;
+  };
+  // -------------------------------------------------------------------------
 
   // Conditional rendering based on application state
   const getInteractionArea = (stateApp) => {
@@ -222,7 +237,7 @@ function App() {
               </div>
             </div>
             <div ref={$interactionArea} className='to-do__interaction-area'>
-              <div ref={$resizeLine} className='to-do__resize-line' onMouseDown={(e) => mouseInterception(e)} />
+              <div ref={$resizeLine} className='to-do__resize-line' onMouseDown={(e) => mouseInterception(e)} onDoubleClick={setMinWidthToDoPanel} />
               <div className='interaction-area'>
                 {getInteractionArea(stateApp)}
               </div>
