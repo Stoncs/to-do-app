@@ -12,6 +12,7 @@ https://to-do-app-stoncs.herokuapp.com/
 * Javascript
 * React.js
 * Scss
+* BEM
 
 ## Basic goals:  
 
