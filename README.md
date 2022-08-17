@@ -4,7 +4,11 @@ The goal of the assignment is to write a TODO List application.
 The use of frameworks and libraries other than React is not allowed. Commenting on code with explanations is a must.  
 
 You can view the application here (the layout is not adaptive, so only on the desktop):  
-https://to-do-app-stoncs.herokuapp.com/
+https://to-do-app-stoncs.herokuapp.com/  
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/55064583/185197993-0fb12c6b-6ade-49d7-9cc2-6bc9c2d50240.png" width="1500">
+</p>
 
 
 ## Technologies
